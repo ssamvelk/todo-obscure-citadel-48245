@@ -1,0 +1,10 @@
+<mat-card *ngFor="let category of categories" class="category-card">
+  <mat-card-header>
+    <mat-card-title>{{category.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-selection-list #shoes disableRipple="false">
+    <mat-list-option *ngFor="let todo of category.todos"  [selected]="todo.isCompleted">
+      {{todo.text}}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-card>
