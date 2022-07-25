@@ -1,0 +1,24 @@
+<form class="form" [formGroup]="addTodoForm" (ngSubmit)="submit()">
+  <mat-form-field appearance="fill">
+    <input matInput cdkFocusInitial placeholder="Название задачи" formControlName="todoText">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-select placeholder="Категория" formControlName="existCategory">
+      <mat-option value="">Новая категория</mat-option>
+      <mat-option value="two">Second category</mat-option>
+      <mat-option value="three">Third category</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <input *ngIf="!addTodoForm.value.existCategory" matInput placeholder="Категория" formControlName="newCategory">
+    <input *ngIf="addTodoForm.value.existCategory" matInput placeholder="Категория" disabled>
+  </mat-form-field>
+
+  <div mat-dialog-actions class="controls">
+    <button mat-raised-button mat-dialog-close>{{'отмена' | uppercase}}</button>
+    <button type="submit" mat-raised-button color="primary" mat-dialog-close [disabled]="!addTodoForm.value.todoText">{{'ок' | uppercase}}</button>
+  </div>
+
+</form>

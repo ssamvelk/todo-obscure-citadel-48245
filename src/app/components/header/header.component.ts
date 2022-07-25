@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -15,7 +15,8 @@ export class HeaderComponent {
     exitAnimationDuration: string = '500ms'
   ): void {
     this.dialog.open(DialogComponent, {
-      width: '250px',
+      width: '400px',
+      autoFocus: true,
       enterAnimationDuration,
       exitAnimationDuration,
     });

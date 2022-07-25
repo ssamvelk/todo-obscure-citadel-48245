@@ -11,6 +11,11 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { MatListModule } from '@angular/material/list';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AddTodoFormComponent } from './components/add-todo-form/add-todo-form.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -18,16 +23,21 @@ import { MatDialogModule } from '@angular/material/dialog';
     HeaderComponent,
     CategoriesComponent,
     DialogComponent,
+    AddTodoFormComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
     MatButtonModule,
     MatListModule,
     MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
