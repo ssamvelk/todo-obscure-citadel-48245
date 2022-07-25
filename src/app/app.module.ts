@@ -9,9 +9,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './components/header/header.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { MatListModule } from '@angular/material/list';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, CategoriesComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    CategoriesComponent,
+    DialogComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -20,6 +27,7 @@ import { MatListModule } from '@angular/material/list';
     MatCardModule,
     MatButtonModule,
     MatListModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
