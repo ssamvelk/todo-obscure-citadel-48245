@@ -1,14 +1,14 @@
 :host {
   display: flex;
-  justify-content: space-around;
-  padding-top: 50px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 50px;
 }
 
 .category-card {
   width: 300px;
   min-height: 400px;
-  // border: 1px solid black;
-  // border-radius: 5px;
+  margin-top: 20px;
 }
 
 .completed {

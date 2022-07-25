@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { mockCategories } from 'src/app/helpers/constants';
 import { ICategory } from 'src/app/interfaces/category.interface';
 import { CategoryService } from 'src/app/services/category.service';
 
@@ -12,6 +13,15 @@ export class CategoriesComponent implements OnInit {
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
-    this.categories = this.categoryService.getCategories();
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        console.log('data', categories);
+        this.categories = categories.data.categories;
+      },
+      error: (e) => {
+        console.log('error', e);
+        this.categories = mockCategories;
+      },
+    });
   }
 }

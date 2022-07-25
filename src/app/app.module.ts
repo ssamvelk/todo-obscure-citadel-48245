@@ -16,6 +16,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
+import { SERVER_URL } from './helpers/constants';
 
 @NgModule({
   declarations: [
@@ -29,6 +34,8 @@ import { MatSelectModule } from '@angular/material/select';
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    ApolloModule,
+    HttpClientModule,
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
@@ -39,7 +46,20 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatSelectModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: SERVER_URL,
+          }),
+        };
+      },
+      deps: [HttpLink],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
