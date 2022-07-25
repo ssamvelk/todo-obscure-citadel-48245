@@ -18,7 +18,14 @@
 
   <div mat-dialog-actions class="controls">
     <button mat-raised-button mat-dialog-close>{{'отмена' | uppercase}}</button>
-    <button type="submit" mat-raised-button color="primary" mat-dialog-close [disabled]="!addTodoForm.value.todoText">{{'ок' | uppercase}}</button>
+    <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    mat-dialog-close
+    [disabled]="isButtonDisabled()"
+    >{{'ок' | uppercase}}</button>
   </div>
 
 </form>
+<!-- [disabled]="!addTodoForm.value.todoText || (addTodoForm.value.newCategory && !addTodoForm.value.existCategory) || (!addTodoForm.value.newCategory && addTodoForm.value.existCategory)" -->

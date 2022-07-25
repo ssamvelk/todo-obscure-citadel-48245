@@ -2,9 +2,15 @@
   <mat-card-header>
     <mat-card-title>{{category.title}}</mat-card-title>
   </mat-card-header>
-  <mat-selection-list #shoes disableRipple="false">
-    <mat-list-option *ngFor="let todo of category.todos"  [selected]="todo.isCompleted" [ngClass]="{completed: todo.isCompleted}">
+  <mat-selection-list>
+    <mat-list-option
+      *ngFor="let todo of category.todos"
+      [selected]="todo.isCompleted"
+      [ngClass]="{completed: todo.isCompleted}"
+      (selectedChange)="changeTodoStatus(todo.id, $event)"
+    >
       {{todo.text}}
     </mat-list-option>
   </mat-selection-list>
 </mat-card>
+
