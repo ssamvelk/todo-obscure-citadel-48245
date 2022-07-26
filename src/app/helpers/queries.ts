@@ -71,3 +71,17 @@ export const CREATE_CATEGORY = gql`
     }
   }
 `;
+
+export const CREATE_TODO = gql`
+  mutation createTodo2($todo: CreateTodoInput2!) {
+    createTodo2(todo: $todo) {
+      id
+      text
+      isCompleted
+      category {
+        id
+        title
+      }
+    }
+  }
+`;

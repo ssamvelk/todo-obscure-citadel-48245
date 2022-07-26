@@ -1,6 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
+import { concatMap, map, Observable } from 'rxjs';
+import {
+  ICreateCategoryResponse,
+  IGetCategoriesResponse,
+} from 'src/app/interfaces/category.interface';
 
 @Component({
   selector: 'app-add-todo-form',
@@ -8,46 +13,65 @@ import { CategoryService } from 'src/app/services/category.service';
   styleUrls: ['./add-todo-form.component.scss'],
 })
 export class AddTodoFormComponent implements OnInit {
-  addTodoForm!: FormGroup;
-  constructor(private categoryService: CategoryService) {}
+  public addTodoForm!: FormGroup;
+
+  // : Observable<ApolloQueryResult<any>>
+  public cat$ = this.categoryService.getCategories().pipe(
+    map((categories) => {
+      return categories.data.categories;
+    })
+  );
+
+  constructor(
+    private categoryService: CategoryService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
+    this.cat$.subscribe((data) => console.log('data cat$', data));
+
     this.addTodoForm = new FormGroup({
-      todoText: new FormControl('', []),
+      todoText: new FormControl('', [Validators.required]),
       existCategory: new FormControl(''),
-      newCategory: new FormControl(''),
+      newCategory: new FormControl('', [Validators.required]),
     });
   }
 
   submit() {
-    console.log('addTodoForm', this.addTodoForm.value);
     if (
       !this.addTodoForm.value.existCategory &&
       this.addTodoForm.value.newCategory
     ) {
-      console.log('Создать новую категорию!!!');
       this.categoryService
         .createCategory(this.addTodoForm.value.newCategory)
-        .subscribe((data) => {
-          console.log('Создал новую категорию data', data);
+        .pipe(
+          concatMap((categoryInfo) => {
+            const { id } = (categoryInfo.data as ICreateCategoryResponse)
+              .createCategory;
+            return this.categoryService.createTodo(
+              this.addTodoForm.value.todoText,
+              +id
+            );
+          })
+        )
+        .subscribe(() => {
+          this.categoryService.subject$.next(true);
         });
     } else {
-      console.log('Поместить туду в существующую категорию!');
+      this.categoryService
+        .createTodo(
+          this.addTodoForm.value.todoText,
+          +this.addTodoForm.value.existCategory
+        )
+        .subscribe(() => {
+          this.categoryService.subject$.next(true);
+        });
     }
   }
 
-  createCategory(title: string) {
-    this.categoryService.createCategory(title).subscribe({
-      next: (category) => {
-        console.log('CreateCategory', category);
-      },
-      error: (e) => {
-        console.log('Error', e);
-      },
-    });
+  createTodo(text: string, categoryId: number, isCompleted: boolean) {
+    return this.categoryService.createTodo(text, categoryId, isCompleted);
   }
-
-  createTodo() {}
 
   deleteCategory() {}
   deleteTodo() {}

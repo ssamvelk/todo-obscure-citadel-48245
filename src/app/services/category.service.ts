@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 // import { ICategory } from '../interfaces/category.interface';
 import {
   CREATE_CATEGORY,
+  CREATE_TODO,
   GET_CATEGORIES,
   GET_ONE_CATEGORY,
   GET_ONE_TODO,
@@ -62,7 +63,18 @@ export class CategoryService {
     });
   }
 
-  createTodo() {}
+  createTodo(text: string, categoryId: number, isCompleted: boolean = false) {
+    return this.apollo.mutate({
+      mutation: CREATE_TODO,
+      variables: {
+        todo: {
+          text,
+          categoryId,
+          isCompleted,
+        },
+      },
+    });
+  }
 
   createCategory(title: string) {
     return this.apollo.mutate({

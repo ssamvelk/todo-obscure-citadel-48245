@@ -5,3 +5,11 @@ export interface ICategory {
   title: string;
   todos: ITodo[];
 }
+
+export interface ICreateCategoryResponse {
+  createCategory: ICategory;
+}
+
+export interface IGetCategoriesResponse {
+  categories: ICategory[];
+}

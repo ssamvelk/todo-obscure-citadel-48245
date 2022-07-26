@@ -6,8 +6,8 @@
   <mat-form-field appearance="fill">
     <mat-select placeholder="Категория" formControlName="existCategory">
       <mat-option value="">Новая категория</mat-option>
-      <mat-option value="two">Second category</mat-option>
-      <mat-option value="three">Third category</mat-option>
+      <mat-option *ngFor="let category of cat$ |async" [value]="category.id">{{category.title}}</mat-option>
+      <!-- <mat-option value="three">Third category</mat-option> -->
     </mat-select>
   </mat-form-field>
 
