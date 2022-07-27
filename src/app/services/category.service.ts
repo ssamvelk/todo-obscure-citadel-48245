@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Subject } from 'rxjs';
-// import { ICategory } from '../interfaces/category.interface';
 import {
   CREATE_CATEGORY,
   CREATE_TODO,
@@ -10,20 +9,20 @@ import {
   GET_ONE_TODO,
   GET_TODOS,
   UPDATE_TODO,
-} from '../helpers/queries';
+} from '../helpers/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  public subject$ = new Subject();
-  // categories: ICategory[] = [];
+  public addNewItemSubject$ = new Subject();
 
   constructor(private apollo: Apollo) {}
 
   getCategories() {
     return this.apollo.watchQuery<any>({
       query: GET_CATEGORIES,
+      fetchPolicy: 'network-only',
     }).valueChanges;
   }
 

@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
 import { concatMap, map, Observable } from 'rxjs';
 import {
+  ICategory,
   ICreateCategoryResponse,
   IGetCategoriesResponse,
 } from 'src/app/interfaces/category.interface';
@@ -14,6 +15,7 @@ import {
 })
 export class AddTodoFormComponent implements OnInit {
   public addTodoForm!: FormGroup;
+  // @Input() categories: ICategory[] = [];
 
   // : Observable<ApolloQueryResult<any>>
   public cat$ = this.categoryService.getCategories().pipe(
@@ -55,7 +57,7 @@ export class AddTodoFormComponent implements OnInit {
           })
         )
         .subscribe(() => {
-          this.categoryService.subject$.next(true);
+          this.categoryService.addNewItemSubject$.next(true);
         });
     } else {
       this.categoryService
@@ -64,7 +66,7 @@ export class AddTodoFormComponent implements OnInit {
           +this.addTodoForm.value.existCategory
         )
         .subscribe(() => {
-          this.categoryService.subject$.next(true);
+          this.categoryService.addNewItemSubject$.next(true);
         });
     }
   }

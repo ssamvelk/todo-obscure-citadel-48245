@@ -1,5 +1,4 @@
-<!-- <mat-card *ngFor="let category of categories" class="category-card"> -->
-<mat-card *ngFor="let category of cat$ | async" class="category-card">
+<mat-card *ngFor="let category of categories" class="category-card">
   <mat-card-header>
     <mat-card-title>{{category.title}}</mat-card-title>
   </mat-card-header>

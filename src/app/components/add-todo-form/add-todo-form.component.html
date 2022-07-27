@@ -1,17 +1,16 @@
 <form class="form" [formGroup]="addTodoForm" (ngSubmit)="submit()">
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <input matInput cdkFocusInitial placeholder="Название задачи" formControlName="todoText">
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-select placeholder="Категория" formControlName="existCategory">
       <mat-option value="">Новая категория</mat-option>
       <mat-option *ngFor="let category of cat$ |async" [value]="category.id">{{category.title}}</mat-option>
-      <!-- <mat-option value="three">Third category</mat-option> -->
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <input *ngIf="!addTodoForm.value.existCategory" matInput placeholder="Категория" formControlName="newCategory">
     <input *ngIf="addTodoForm.value.existCategory" matInput placeholder="Категория" disabled>
   </mat-form-field>
@@ -21,11 +20,10 @@
     <button
     type="submit"
     mat-raised-button
-    color="primary"
+    color="accent"
     mat-dialog-close
     [disabled]="isButtonDisabled()"
     >{{'ок' | uppercase}}</button>
   </div>
 
 </form>
-<!-- [disabled]="!addTodoForm.value.todoText || (addTodoForm.value.newCategory && !addTodoForm.value.existCategory) || (!addTodoForm.value.newCategory && addTodoForm.value.existCategory)" -->
