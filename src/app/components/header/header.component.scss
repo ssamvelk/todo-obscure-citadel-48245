@@ -9,4 +9,8 @@
 .add-button{
   position: absolute;
   right: 0;
+
+  :hover {
+    transform: scale(1.3);
+  }
 }

@@ -1,16 +1,1 @@
-<mat-card *ngFor="let category of categories" class="category-card">
-  <mat-card-header>
-    <mat-card-title>{{category.title}}</mat-card-title>
-  </mat-card-header>
-  <mat-selection-list>
-    <mat-list-option
-      *ngFor="let todo of category.todos"
-      [selected]="todo.isCompleted"
-      [ngClass]="{completed: todo.isCompleted}"
-      (selectedChange)="changeTodoStatus(todo.id, $event)"
-    >
-      {{todo.text}}
-    </mat-list-option>
-  </mat-selection-list>
-</mat-card>
-
+<app-category-card *ngFor="let category of categories" [category]="category"></app-category-card>

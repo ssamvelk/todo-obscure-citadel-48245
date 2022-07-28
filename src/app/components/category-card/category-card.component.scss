@@ -1,0 +1,22 @@
+
+mat-card-header{
+  .remove-category-button{
+    position: absolute;
+    right: 0;
+    top: 5px;
+
+    :hover {
+      transform: scale(1.3);
+    }
+  }
+}
+
+.category-card {
+  width: 300px;
+  min-height: 400px;
+  margin-top: 20px;
+}
+
+.completed {
+  text-decoration: line-through;
+}

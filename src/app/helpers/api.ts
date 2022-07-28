@@ -85,3 +85,9 @@ export const CREATE_TODO = gql`
     }
   }
 `;
+
+export const REMOVE_CATEGORY = gql`
+  mutation removeCategory($id: Float!) {
+    removeCategory(id: $id)
+  }
+`;

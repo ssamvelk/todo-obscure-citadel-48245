@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddTodoFormComponent } from './components/add-todo-form/add-todo-form.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
@@ -21,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { SERVER_URL } from './helpers/constants';
+import { CategoryCardComponent } from './components/category-card/category-card.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { SERVER_URL } from './helpers/constants';
     CategoriesComponent,
     DialogComponent,
     AddTodoFormComponent,
+    CategoryCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import { SERVER_URL } from './helpers/constants';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatTooltipModule,
   ],
   providers: [
     {

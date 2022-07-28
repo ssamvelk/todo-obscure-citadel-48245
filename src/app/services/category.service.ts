@@ -8,6 +8,7 @@ import {
   GET_ONE_CATEGORY,
   GET_ONE_TODO,
   GET_TODOS,
+  REMOVE_CATEGORY,
   UPDATE_TODO,
 } from '../helpers/api';
 
@@ -82,6 +83,15 @@ export class CategoryService {
         createCategory: {
           title,
         },
+      },
+    });
+  }
+
+  removeCategoryCard(id: number) {
+    return this.apollo.mutate({
+      mutation: REMOVE_CATEGORY,
+      variables: {
+        id,
       },
     });
   }
