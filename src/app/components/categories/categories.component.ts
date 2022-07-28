@@ -17,26 +17,12 @@ import { CategoryService } from 'src/app/services/category.service';
   styleUrls: ['./categories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent {
   @Input() categories: ICategory[] = [];
-
-  // categories$ = this.categoryService
-  //   .getCategories()
-  //   .pipe(map((data) => [...data.data.categories]));
-
   constructor(
     private categoryService: CategoryService,
     private cd: ChangeDetectorRef
   ) {}
-
-  ngOnInit(): void {
-    // this.categoryService.addNewItemSubject$.subscribe(() => {
-    //   console.log('subject$ next!!!');
-    //   this.cd.detectChanges();
-    //   this.cd.markForCheck();
-    //   document.location.reload(); // Кастыль на время
-    // });
-  }
 
   changeTodoStatus(id: number, status: boolean) {
     this.categoryService.updateTodo(id, status).subscribe();

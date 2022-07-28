@@ -16,7 +16,12 @@ export class CategoryCardComponent implements OnInit {
   ngOnInit(): void {}
 
   changeTodoStatus(id: number, status: boolean) {
-    this.categoryService.updateTodo(id, status).pipe(take(1)).subscribe();
+    this.categoryService
+      .updateTodo(id, status)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.categoryService.addNewItemSubject$.next(true);
+      });
   }
 
   removeCategoryCard(id: number) {
