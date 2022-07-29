@@ -1,3 +1,4 @@
+import { SERVER_URL } from './helpers/constants';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,8 +22,8 @@ import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { SERVER_URL } from './helpers/constants';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { CategoryCardComponent } from './components/category-card/category-card.
     MatFormFieldModule,
     MatSelectModule,
     MatTooltipModule,
+    MatSnackBarModule,
   ],
   providers: [
     {

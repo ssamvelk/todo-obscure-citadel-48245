@@ -2,19 +2,16 @@
   <mat-form-field appearance="fill" color="accent">
     <input matInput cdkFocusInitial placeholder="Название задачи" formControlName="todoText">
   </mat-form-field>
-
   <mat-form-field appearance="fill" color="accent">
     <mat-select placeholder="Категория" formControlName="existCategory">
       <mat-option value="">Новая категория</mat-option>
-      <mat-option *ngFor="let category of cat$ |async" [value]="category.id">{{category.title}}</mat-option>
+      <mat-option *ngFor="let category of categories$ |async" [value]="category.id">{{category.title}}</mat-option>
     </mat-select>
   </mat-form-field>
-
   <mat-form-field appearance="fill" color="accent">
     <input *ngIf="!addTodoForm.value.existCategory" matInput placeholder="Категория" formControlName="newCategory">
     <input *ngIf="addTodoForm.value.existCategory" matInput placeholder="Категория" disabled>
   </mat-form-field>
-
   <div mat-dialog-actions class="controls">
     <button mat-raised-button mat-dialog-close>{{'отмена' | uppercase}}</button>
     <button
@@ -25,5 +22,4 @@
     [disabled]="isButtonDisabled()"
     >{{'ок' | uppercase}}</button>
   </div>
-
 </form>

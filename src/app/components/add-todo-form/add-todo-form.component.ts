@@ -1,12 +1,8 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
-import { concatMap, map, Observable } from 'rxjs';
-import {
-  ICategory,
-  ICreateCategoryResponse,
-  IGetCategoriesResponse,
-} from 'src/app/interfaces/category.interface';
+import { concatMap, map } from 'rxjs';
+import { ICreateCategoryResponse } from 'src/app/interfaces/category.interface';
 
 @Component({
   selector: 'app-add-todo-form',
@@ -15,23 +11,16 @@ import {
 })
 export class AddTodoFormComponent implements OnInit {
   public addTodoForm!: FormGroup;
-  // @Input() categories: ICategory[] = [];
 
-  // : Observable<ApolloQueryResult<any>>
-  public cat$ = this.categoryService.getCategories().pipe(
+  public categories$ = this.categoryService.getCategories().pipe(
     map((categories) => {
       return categories.data.categories;
     })
   );
 
-  constructor(
-    private categoryService: CategoryService,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
-    this.cat$.subscribe((data) => console.log('data cat$', data));
-
     this.addTodoForm = new FormGroup({
       todoText: new FormControl('', [Validators.required]),
       existCategory: new FormControl(''),
