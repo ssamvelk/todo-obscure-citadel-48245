@@ -24,6 +24,7 @@ import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SortPipe } from './sort.pipe';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     DialogComponent,
     AddTodoFormComponent,
     CategoryCardComponent,
+    SortPipe,
   ],
   imports: [
     BrowserModule,

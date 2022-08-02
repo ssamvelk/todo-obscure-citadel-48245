@@ -14,7 +14,7 @@
   </mat-card-header>
   <mat-selection-list>
     <mat-list-option
-      *ngFor="let todo of category.todos; trackBy: trackByFn"
+      *ngFor="let todo of category.todos | sort; trackBy: trackByFn"
       [selected]="todo.isCompleted"
       [ngClass]="{completed: todo.isCompleted}"
       (click)="changeTodoStatus(todo.id, !todo.isCompleted)"
