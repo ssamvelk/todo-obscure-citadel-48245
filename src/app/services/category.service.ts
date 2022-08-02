@@ -1,16 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { Subject } from 'rxjs';
+import { Apollo, MutationResult } from 'apollo-angular';
+import { Subject, Observable } from 'rxjs';
 import {
   CREATE_CATEGORY,
+  CREATE_CATEGORY_AND_TODO,
   CREATE_TODO,
   GET_CATEGORIES,
-  GET_ONE_CATEGORY,
-  GET_ONE_TODO,
-  GET_TODOS,
   REMOVE_CATEGORY,
   UPDATE_TODO,
 } from '../helpers/api';
+import {
+  ICategory,
+  ICreateCategoryAndTodoResponse,
+  ICreateCategoryResponse,
+  IGetCategoriesResponse,
+  IRemoveCategoryResponse,
+} from '../interfaces/category.interface';
+import {
+  ICreateTodoResponse,
+  IPatchTodoResponse,
+  ITodo,
+} from '../interfaces/todo.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,41 +28,24 @@ import {
 export class CategoryService {
   public addNewItemSubject$ = new Subject();
 
+  public updateCategories$ = new Subject<ICategory[]>();
+  public deleteCategory$ = new Subject<number>();
+  public updateTodoStatus$ = new Subject<ITodo>();
+
   constructor(private apollo: Apollo) {}
 
   getCategories() {
-    return this.apollo.watchQuery<any>({
+    return this.apollo.watchQuery<IGetCategoriesResponse>({
       query: GET_CATEGORIES,
       fetchPolicy: 'network-only',
     }).valueChanges;
   }
 
-  getOneCategory(id: number) {
-    return this.apollo.watchQuery<any>({
-      query: GET_ONE_CATEGORY,
-      variables: {
-        id,
-      },
-    }).valueChanges;
-  }
-
-  getTodos() {
-    return this.apollo.query<any>({
-      query: GET_TODOS,
-    });
-  }
-
-  getOneTodo(id: number) {
-    return this.apollo.query<any>({
-      query: GET_ONE_TODO,
-      variables: {
-        id,
-      },
-    });
-  }
-
-  updateTodo(id: number, isCompleted: boolean) {
-    return this.apollo.mutate({
+  updateTodo(
+    id: number,
+    isCompleted: boolean
+  ): Observable<MutationResult<IPatchTodoResponse>> {
+    return this.apollo.mutate<IPatchTodoResponse>({
       mutation: UPDATE_TODO,
       variables: {
         todo: {
@@ -63,8 +56,12 @@ export class CategoryService {
     });
   }
 
-  createTodo(text: string, categoryId: number, isCompleted: boolean = false) {
-    return this.apollo.mutate({
+  createTodo(
+    text: string,
+    categoryId: number,
+    isCompleted: boolean = false
+  ): Observable<MutationResult<ICreateTodoResponse>> {
+    return this.apollo.mutate<ICreateTodoResponse>({
       mutation: CREATE_TODO,
       variables: {
         todo: {
@@ -76,8 +73,10 @@ export class CategoryService {
     });
   }
 
-  createCategory(title: string) {
-    return this.apollo.mutate({
+  createCategory(
+    title: string
+  ): Observable<MutationResult<ICreateCategoryResponse>> {
+    return this.apollo.mutate<ICreateCategoryResponse>({
       mutation: CREATE_CATEGORY,
       variables: {
         createCategory: {
@@ -87,8 +86,31 @@ export class CategoryService {
     });
   }
 
-  removeCategoryCard(id: number) {
-    return this.apollo.mutate({
+  createCategoryAndTodo(
+    categoryTitle: string,
+    id: number,
+    todoText: string
+  ): Observable<MutationResult<ICreateCategoryAndTodoResponse>> {
+    return this.apollo.mutate<ICreateCategoryAndTodoResponse>({
+      mutation: CREATE_CATEGORY_AND_TODO,
+      variables: {
+        createCategory: {
+          id,
+          title: categoryTitle,
+        },
+        todo: {
+          text: todoText,
+          categoryId: id,
+          isCompleted: false,
+        },
+      },
+    });
+  }
+
+  removeCategoryCard(
+    id: number
+  ): Observable<MutationResult<IRemoveCategoryResponse>> {
+    return this.apollo.mutate<IRemoveCategoryResponse>({
       mutation: REMOVE_CATEGORY,
       variables: {
         id,

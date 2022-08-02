@@ -1,4 +1,4 @@
-import { SERVER_URL } from './helpers/constants';
+import { URL } from './helpers/constants';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -59,7 +59,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: SERVER_URL,
+            uri: URL.LOCAL_SERVER_URL,
           }),
         };
       },

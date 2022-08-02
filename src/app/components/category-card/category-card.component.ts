@@ -4,9 +4,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { MatListOption } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { ICategory } from 'src/app/interfaces/category.interface';
+import { ITodo } from 'src/app/interfaces/todo.interface';
 import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
@@ -29,8 +31,10 @@ export class CategoryCardComponent implements OnInit {
     this.categoryService
       .updateTodo(id, status)
       .pipe(take(1))
-      .subscribe(() => {
-        this.categoryService.addNewItemSubject$.next(true);
+      .subscribe(({ data }) => {
+        if (data?.patchTodo) {
+          this.categoryService.updateTodoStatus$.next(data.patchTodo);
+        }
       });
   }
 
@@ -38,11 +42,17 @@ export class CategoryCardComponent implements OnInit {
     this.categoryService
       .removeCategoryCard(id)
       .pipe(take(1))
-      .subscribe(() => {
-        this.categoryService.addNewItemSubject$.next(true);
-        this._snackBar.open(`Категория удалена.`, title, {
-          duration: 2000,
-        });
+      .subscribe(({ data }) => {
+        if (data) {
+          this.categoryService.deleteCategory$.next(data.removeCategory);
+          this._snackBar.open(`Категория удалена.`, title, {
+            duration: 2000,
+          });
+        }
       });
+  }
+
+  trackByFn(index: number, item: ITodo): number {
+    return item.id;
   }
 }

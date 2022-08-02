@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
-import { concatMap, map } from 'rxjs';
-import { ICreateCategoryResponse } from 'src/app/interfaces/category.interface';
+import { concatMap, map, take } from 'rxjs';
+import { ICategory } from 'src/app/interfaces/category.interface';
 
 @Component({
   selector: 'app-add-todo-form',
   templateUrl: './add-todo-form.component.html',
   styleUrls: ['./add-todo-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddTodoFormComponent implements OnInit {
   public addTodoForm!: FormGroup;
 
-  public categories$ = this.categoryService.getCategories().pipe(
-    map((categories) => {
-      return categories.data.categories;
-    })
-  );
+  @Input() public categories: ICategory[] = [];
 
   constructor(private categoryService: CategoryService) {}
 
@@ -33,39 +35,90 @@ export class AddTodoFormComponent implements OnInit {
       !this.addTodoForm.value.existCategory &&
       this.addTodoForm.value.newCategory
     ) {
-      this.categoryService
-        .createCategory(this.addTodoForm.value.newCategory)
-        .pipe(
-          concatMap((categoryInfo) => {
-            const { id } = (categoryInfo.data as ICreateCategoryResponse)
-              .createCategory;
-            return this.categoryService.createTodo(
-              this.addTodoForm.value.todoText,
-              +id
-            );
-          })
-        )
-        .subscribe(() => {
-          this.categoryService.addNewItemSubject$.next(true);
-        });
+      if (this.categories.length) {
+        const categoryId = this.getMaxCategoryId();
+
+        this.categoryService
+          .createCategoryAndTodo(
+            this.addTodoForm.value.newCategory,
+            categoryId + 1,
+            this.addTodoForm.value.todoText
+          )
+          .pipe(take(1))
+          .subscribe(({ data }) => {
+            if (data) {
+              const newCategory = data.createCategory2;
+              newCategory.todos = [data.createTodo2];
+
+              this.categoryService.updateCategories$.next([
+                ...this.categories,
+                newCategory,
+              ]);
+            }
+          });
+      } else {
+        let tempCategory: ICategory;
+
+        this.categoryService
+          .createCategory(this.addTodoForm.value.newCategory)
+          .pipe(
+            concatMap(({ data }) => {
+              const newCategory = data!.createCategory;
+              const { id } = newCategory;
+
+              tempCategory = { ...newCategory, todos: [] };
+
+              return this.categoryService.createTodo(
+                this.addTodoForm.value.todoText,
+                +id
+              );
+            }),
+            take(1)
+          )
+          .subscribe(({ data }) => {
+            const newTodo = data?.createTodo2;
+
+            if (newTodo) {
+              const categoriesCopy: ICategory[] = JSON.parse(
+                JSON.stringify([...this.categories, tempCategory])
+              );
+              const currentCategory = categoriesCopy.find(
+                (category) => category.id === newTodo.category?.id
+              );
+
+              if (currentCategory?.todos) {
+                currentCategory.todos.push(newTodo);
+                this.categoryService.updateCategories$.next(categoriesCopy);
+              }
+            }
+          });
+      }
     } else {
       this.categoryService
         .createTodo(
           this.addTodoForm.value.todoText,
           +this.addTodoForm.value.existCategory
         )
-        .subscribe(() => {
-          this.categoryService.addNewItemSubject$.next(true);
+        .pipe(take(1))
+        .subscribe(({ data }) => {
+          const newTodo = data?.createTodo2;
+
+          if (newTodo) {
+            const categoriesCopy: ICategory[] = JSON.parse(
+              JSON.stringify(this.categories)
+            );
+            const currentCategory = categoriesCopy.find(
+              (category) => category.id === newTodo.category?.id
+            );
+
+            if (currentCategory?.todos) {
+              currentCategory.todos.push(newTodo);
+              this.categoryService.updateCategories$.next(categoriesCopy);
+            }
+          }
         });
     }
   }
-
-  createTodo(text: string, categoryId: number, isCompleted: boolean) {
-    return this.categoryService.createTodo(text, categoryId, isCompleted);
-  }
-
-  deleteCategory() {}
-  deleteTodo() {}
 
   isButtonDisabled() {
     if (!this.addTodoForm.value.todoText) {
@@ -76,5 +129,13 @@ export class AddTodoFormComponent implements OnInit {
     ) {
       return true;
     } else return false;
+  }
+
+  trackByFn(index: number, item: ICategory): number {
+    return item.id;
+  }
+
+  getMaxCategoryId() {
+    return Math.max(...this.categories.map((el) => +el.id));
   }
 }

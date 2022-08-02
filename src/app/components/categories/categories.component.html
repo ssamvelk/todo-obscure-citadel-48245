@@ -1,1 +1,4 @@
-<app-category-card *ngFor="let category of categories" [category]="category"></app-category-card>
+<app-category-card
+  *ngFor="let category of categories; trackBy: trackByFn"
+  [category]="category"
+></app-category-card>

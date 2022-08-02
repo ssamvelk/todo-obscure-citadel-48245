@@ -59,6 +59,10 @@ export const UPDATE_TODO = gql`
     patchTodo(todo: $todo) {
       id
       isCompleted
+      text
+      category {
+        id
+      }
     }
   }
 `;
@@ -82,6 +86,24 @@ export const CREATE_TODO = gql`
         id
         title
       }
+    }
+  }
+`;
+
+export const CREATE_CATEGORY_AND_TODO = gql`
+  mutation createCategoryAndTodo(
+    $createCategory: CreateCategoryInput2!
+    $todo: CreateTodoInput2!
+  ) {
+    createCategory2(createCategory: $createCategory) {
+      id
+      title
+    }
+
+    createTodo2(todo: $todo) {
+      id
+      text
+      isCompleted
     }
   }
 `;

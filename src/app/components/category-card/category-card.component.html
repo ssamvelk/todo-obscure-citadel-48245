@@ -14,10 +14,10 @@
   </mat-card-header>
   <mat-selection-list>
     <mat-list-option
-      *ngFor="let todo of category.todos"
+      *ngFor="let todo of category.todos; trackBy: trackByFn"
       [selected]="todo.isCompleted"
       [ngClass]="{completed: todo.isCompleted}"
-      (selectedChange)="changeTodoStatus(todo.id, $event)"
+      (click)="changeTodoStatus(todo.id, !todo.isCompleted)"
     >
       {{todo.text}}
     </mat-list-option>

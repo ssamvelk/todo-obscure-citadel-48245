@@ -1,7 +1,9 @@
 import { ICategory } from '../interfaces/category.interface';
 
-export const SERVER_URL = 'https://guarded-springs-48275.herokuapp.com/graphql';
-export const LOCAL_SERVER_URL = 'http://localhost:3000/graphql';
+export enum URL {
+  SERVER_URL = 'https://guarded-springs-48275.herokuapp.com/graphql',
+  LOCAL_SERVER_URL = 'http://localhost:3000/graphql',
+}
 
 export const mockCategories: ICategory[] = [
   {

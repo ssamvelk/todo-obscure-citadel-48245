@@ -10,6 +10,15 @@ export interface ICreateCategoryResponse {
   createCategory: ICategory;
 }
 
+export interface ICreateCategoryAndTodoResponse {
+  createCategory2: ICategory;
+  createTodo2: ITodo;
+}
+
 export interface IGetCategoriesResponse {
   categories: ICategory[];
+}
+
+export interface IRemoveCategoryResponse {
+  removeCategory: number;
 }
