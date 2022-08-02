@@ -1,5 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { startWith, take } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { plainToInstance } from 'class-transformer';
+import { take } from 'rxjs';
+import { Category } from './interfaces/Category';
 import { ICategory } from './interfaces/category.interface';
 import { CategoryService } from './services/category.service';
 
@@ -18,11 +20,14 @@ export class AppComponent implements OnInit {
       .getCategories()
       .pipe(take(1))
       .subscribe((categories) => {
-        this.allCategories = categories.data.categories;
+        this.allCategories = plainToInstance(
+          Category,
+          categories.data.categories
+        );
       });
 
     this.categoryService.updateCategories$.subscribe((data) => {
-      this.allCategories = data;
+      this.allCategories = plainToInstance(Category, data);
     });
 
     this.categoryService.deleteCategory$.subscribe((categoryId: number) => {
@@ -32,11 +37,7 @@ export class AppComponent implements OnInit {
     });
 
     this.categoryService.updateTodoStatus$.subscribe((data) => {
-      const categoriesCopy: ICategory[] = JSON.parse(
-        JSON.stringify(this.allCategories)
-      );
-
-      const currentCategory = categoriesCopy.find(
+      const currentCategory = this.allCategories.find(
         (el) => el.id === data.category?.id
       );
 
@@ -45,7 +46,7 @@ export class AppComponent implements OnInit {
 
         if (todo) {
           todo.isCompleted = data.isCompleted;
-          this.categoryService.updateCategories$.next(categoriesCopy);
+          this.categoryService.updateCategories$.next(this.allCategories);
         }
       }
     });

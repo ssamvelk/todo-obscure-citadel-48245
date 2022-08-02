@@ -79,9 +79,10 @@ export class AddTodoFormComponent implements OnInit {
             const newTodo = data?.createTodo2;
 
             if (newTodo) {
-              const categoriesCopy: ICategory[] = JSON.parse(
-                JSON.stringify([...this.categories, tempCategory])
-              );
+              const categoriesCopy: ICategory[] = [
+                ...this.categories,
+                tempCategory,
+              ];
               const currentCategory = categoriesCopy.find(
                 (category) => category.id === newTodo.category?.id
               );
@@ -104,16 +105,13 @@ export class AddTodoFormComponent implements OnInit {
           const newTodo = data?.createTodo2;
 
           if (newTodo) {
-            const categoriesCopy: ICategory[] = JSON.parse(
-              JSON.stringify(this.categories)
-            );
-            const currentCategory = categoriesCopy.find(
+            const currentCategory = this.categories.find(
               (category) => category.id === newTodo.category?.id
             );
 
             if (currentCategory?.todos) {
               currentCategory.todos.push(newTodo);
-              this.categoryService.updateCategories$.next(categoriesCopy);
+              this.categoryService.updateCategories$.next(this.categories);
             }
           }
         });

@@ -59,7 +59,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: URL.LOCAL_SERVER_URL,
+            uri: URL.SERVER_URL,
           }),
         };
       },
