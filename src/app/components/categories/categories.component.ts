@@ -1,15 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DoCheck,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { map } from 'rxjs';
-import { mockCategories } from 'src/app/helpers/constants';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ICategory } from 'src/app/interfaces/category.interface';
-import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-categories',

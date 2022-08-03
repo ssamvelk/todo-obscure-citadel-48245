@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { MatListOption } from '@angular/material/list';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { ICategory } from 'src/app/interfaces/category.interface';
@@ -17,15 +11,13 @@ import { CategoryService } from 'src/app/services/category.service';
   styleUrls: ['./category-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryCardComponent implements OnInit {
+export class CategoryCardComponent {
   @Input() category!: ICategory;
 
   constructor(
     private categoryService: CategoryService,
     private _snackBar: MatSnackBar
   ) {}
-
-  ngOnInit(): void {}
 
   changeTodoStatus(id: number, status: boolean) {
     this.categoryService
