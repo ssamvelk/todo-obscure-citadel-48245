@@ -32,8 +32,8 @@ export class CategoryCardComponent implements OnInit {
       .updateTodo(id, status)
       .pipe(take(1))
       .subscribe(({ data }) => {
-        if (data?.patchTodo) {
-          this.categoryService.updateTodoStatus$.next(data.patchTodo);
+        if (data?.updateTodo) {
+          this.categoryService.updateTodoStatus$.next(data.updateTodo);
         }
       });
   }

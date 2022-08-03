@@ -19,14 +19,6 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class CategoriesComponent {
   @Input() categories: ICategory[] = [];
-  // constructor(
-  //   private categoryService: CategoryService,
-  //   private cd: ChangeDetectorRef
-  // ) {}
-
-  // changeTodoStatus(id: number, status: boolean) {
-  //   this.categoryService.updateTodo(id, status).subscribe();
-  // }
 
   trackByFn(index: number, item: ICategory): number {
     return item.id;

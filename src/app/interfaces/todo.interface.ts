@@ -8,10 +8,9 @@ export interface ITodo {
 }
 
 export interface ICreateTodoResponse {
-  createTodo2: ITodo;
-  createTodo?: ITodo;
+  createTodo: ITodo;
 }
 
-export interface IPatchTodoResponse {
-  patchTodo: ITodo;
+export interface IUpdateTodoResponse {
+  updateTodo: ITodo;
 }

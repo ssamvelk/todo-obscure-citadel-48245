@@ -11,8 +11,8 @@ export interface ICreateCategoryResponse {
 }
 
 export interface ICreateCategoryAndTodoResponse {
-  createCategory2: ICategory;
-  createTodo2: ITodo;
+  createCategory: ICategory;
+  createTodo: ITodo;
 }
 
 export interface IGetCategoriesResponse {

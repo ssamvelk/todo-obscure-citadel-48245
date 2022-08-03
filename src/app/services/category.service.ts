@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Apollo, MutationResult } from 'apollo-angular';
 import { Subject, Observable } from 'rxjs';
 import {
-  CREATE_CATEGORY,
   CREATE_CATEGORY_AND_TODO,
   CREATE_TODO,
   GET_CATEGORIES,
@@ -12,14 +11,13 @@ import {
 import {
   ICategory,
   ICreateCategoryAndTodoResponse,
-  ICreateCategoryResponse,
   IGetCategoriesResponse,
   IRemoveCategoryResponse,
 } from '../interfaces/category.interface';
 import {
   ICreateTodoResponse,
-  IPatchTodoResponse,
   ITodo,
+  IUpdateTodoResponse,
 } from '../interfaces/todo.interface';
 
 @Injectable({
@@ -39,51 +37,6 @@ export class CategoryService {
       query: GET_CATEGORIES,
       fetchPolicy: 'network-only',
     }).valueChanges;
-  }
-
-  updateTodo(
-    id: number,
-    isCompleted: boolean
-  ): Observable<MutationResult<IPatchTodoResponse>> {
-    return this.apollo.mutate<IPatchTodoResponse>({
-      mutation: UPDATE_TODO,
-      variables: {
-        todo: {
-          id,
-          isCompleted,
-        },
-      },
-    });
-  }
-
-  createTodo(
-    text: string,
-    categoryId: number,
-    isCompleted: boolean = false
-  ): Observable<MutationResult<ICreateTodoResponse>> {
-    return this.apollo.mutate<ICreateTodoResponse>({
-      mutation: CREATE_TODO,
-      variables: {
-        todo: {
-          text,
-          categoryId,
-          isCompleted,
-        },
-      },
-    });
-  }
-
-  createCategory(
-    title: string
-  ): Observable<MutationResult<ICreateCategoryResponse>> {
-    return this.apollo.mutate<ICreateCategoryResponse>({
-      mutation: CREATE_CATEGORY,
-      variables: {
-        createCategory: {
-          title,
-        },
-      },
-    });
   }
 
   createCategoryAndTodo(
@@ -114,6 +67,38 @@ export class CategoryService {
       mutation: REMOVE_CATEGORY,
       variables: {
         id,
+      },
+    });
+  }
+
+  createTodo(
+    text: string,
+    categoryId: number,
+    isCompleted: boolean = false
+  ): Observable<MutationResult<ICreateTodoResponse>> {
+    return this.apollo.mutate<ICreateTodoResponse>({
+      mutation: CREATE_TODO,
+      variables: {
+        todo: {
+          text,
+          categoryId,
+          isCompleted,
+        },
+      },
+    });
+  }
+
+  updateTodo(
+    id: number,
+    isCompleted: boolean
+  ): Observable<MutationResult<IUpdateTodoResponse>> {
+    return this.apollo.mutate<IUpdateTodoResponse>({
+      mutation: UPDATE_TODO,
+      variables: {
+        todo: {
+          id,
+          isCompleted,
+        },
       },
     });
   }

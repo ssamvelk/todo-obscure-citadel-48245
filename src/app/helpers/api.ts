@@ -14,17 +14,27 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
-export const GET_ONE_CATEGORY = gql`
-  query getOneCategories($id: Float!) {
-    getOneCategories(id: $id) {
+export const CREATE_CATEGORY_AND_TODO = gql`
+  mutation createCategoryAndTodo(
+    $createCategory: CreateCategoryInput!
+    $todo: CreateTodoInput!
+  ) {
+    createCategory(createCategory: $createCategory) {
       id
       title
-      todos {
-        id
-        text
-        isCompleted
-      }
     }
+
+    createTodo(todo: $todo) {
+      id
+      text
+      isCompleted
+    }
+  }
+`;
+
+export const REMOVE_CATEGORY = gql`
+  mutation removeCategory($id: Float!) {
+    removeCategory(id: $id)
   }
 `;
 
@@ -54,31 +64,9 @@ export const GET_ONE_TODO = gql`
   }
 `;
 
-export const UPDATE_TODO = gql`
-  mutation patchTodo($todo: PatchTodoDTO!) {
-    patchTodo(todo: $todo) {
-      id
-      isCompleted
-      text
-      category {
-        id
-      }
-    }
-  }
-`;
-
-export const CREATE_CATEGORY = gql`
-  mutation createCategory($createCategory: CreateCategoryInput!) {
-    createCategory(createCategory: $createCategory) {
-      title
-      id
-    }
-  }
-`;
-
 export const CREATE_TODO = gql`
-  mutation createTodo2($todo: CreateTodoInput2!) {
-    createTodo2(todo: $todo) {
+  mutation createTodo($todo: CreateTodoInput!) {
+    createTodo(todo: $todo) {
       id
       text
       isCompleted
@@ -90,26 +78,15 @@ export const CREATE_TODO = gql`
   }
 `;
 
-export const CREATE_CATEGORY_AND_TODO = gql`
-  mutation createCategoryAndTodo(
-    $createCategory: CreateCategoryInput2!
-    $todo: CreateTodoInput2!
-  ) {
-    createCategory2(createCategory: $createCategory) {
+export const UPDATE_TODO = gql`
+  mutation updateTodo($todo: UpdateTodoInput!) {
+    updateTodo(todo: $todo) {
       id
-      title
-    }
-
-    createTodo2(todo: $todo) {
-      id
-      text
       isCompleted
+      text
+      category {
+        id
+      }
     }
-  }
-`;
-
-export const REMOVE_CATEGORY = gql`
-  mutation removeCategory($id: Float!) {
-    removeCategory(id: $id)
   }
 `;

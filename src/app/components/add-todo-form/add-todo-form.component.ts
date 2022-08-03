@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
-import { concatMap, map, take } from 'rxjs';
+import { take } from 'rxjs';
 import { ICategory } from 'src/app/interfaces/category.interface';
 
 @Component({
@@ -35,65 +35,26 @@ export class AddTodoFormComponent implements OnInit {
       !this.addTodoForm.value.existCategory &&
       this.addTodoForm.value.newCategory
     ) {
-      if (this.categories.length) {
-        const categoryId = this.getMaxCategoryId();
+      const categoryId = this.getMaxCategoryId();
 
-        this.categoryService
-          .createCategoryAndTodo(
-            this.addTodoForm.value.newCategory,
-            categoryId + 1,
-            this.addTodoForm.value.todoText
-          )
-          .pipe(take(1))
-          .subscribe(({ data }) => {
-            if (data) {
-              const newCategory = data.createCategory2;
-              newCategory.todos = [data.createTodo2];
+      this.categoryService
+        .createCategoryAndTodo(
+          this.addTodoForm.value.newCategory,
+          categoryId + 1,
+          this.addTodoForm.value.todoText
+        )
+        .pipe(take(1))
+        .subscribe(({ data }) => {
+          if (data) {
+            const newCategory = data.createCategory;
+            newCategory.todos = [data.createTodo];
 
-              this.categoryService.updateCategories$.next([
-                ...this.categories,
-                newCategory,
-              ]);
-            }
-          });
-      } else {
-        let tempCategory: ICategory;
-
-        this.categoryService
-          .createCategory(this.addTodoForm.value.newCategory)
-          .pipe(
-            concatMap(({ data }) => {
-              const newCategory = data!.createCategory;
-              const { id } = newCategory;
-
-              tempCategory = { ...newCategory, todos: [] };
-
-              return this.categoryService.createTodo(
-                this.addTodoForm.value.todoText,
-                +id
-              );
-            }),
-            take(1)
-          )
-          .subscribe(({ data }) => {
-            const newTodo = data?.createTodo2;
-
-            if (newTodo) {
-              const categoriesCopy: ICategory[] = [
-                ...this.categories,
-                tempCategory,
-              ];
-              const currentCategory = categoriesCopy.find(
-                (category) => category.id === newTodo.category?.id
-              );
-
-              if (currentCategory?.todos) {
-                currentCategory.todos.push(newTodo);
-                this.categoryService.updateCategories$.next(categoriesCopy);
-              }
-            }
-          });
-      }
+            this.categoryService.updateCategories$.next([
+              ...this.categories,
+              newCategory,
+            ]);
+          }
+        });
     } else {
       this.categoryService
         .createTodo(
@@ -102,7 +63,7 @@ export class AddTodoFormComponent implements OnInit {
         )
         .pipe(take(1))
         .subscribe(({ data }) => {
-          const newTodo = data?.createTodo2;
+          const newTodo = data?.createTodo;
 
           if (newTodo) {
             const currentCategory = this.categories.find(
@@ -134,6 +95,11 @@ export class AddTodoFormComponent implements OnInit {
   }
 
   getMaxCategoryId() {
-    return Math.max(...this.categories.map((el) => +el.id));
+    if (this.categories.length) {
+      return Math.max(
+        ...this.categories.map((category) => Number(category.id))
+      );
+    }
+    return 0;
   }
 }
